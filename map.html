@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=b5c30a99-018a-4b78-8251-34d80f77b461&lang=ru_RU"
+        type="text/javascript">
+        </script>
+
+        <script type="text/javascript">
+            var myMap;
+
+            // Дождёмся загрузки API и готовности DOM.
+            ymaps.ready(init);
+
+            function init () {
+                // Создание экземпляра карты и его привязка к контейнеру с
+                // заданным id ("map").
+                myMap = new ymaps.Map('map', {
+                    // При инициализации карты обязательно нужно указать
+                    // её центр и коэффициент масштабирования.
+                    center: [51.71358877674014,55.07913029837028], // Москва
+                    zoom: 15
+                });
+                // Загрузка XML данных.
+                // Функция определяет формат файла (KML, GPX или YMapsML) автоматически.
+                ymaps.geoXml.load('https://getfile.dokpub.com/yandex/get/https://yadi.sk/d/Awm82L5wiadJXg')
+            .then(onGeoXmlLoad);
+
+                 // Обработчик загрузки XML-файлов.
+                function onGeoXmlLoad(res) {
+                    myMap.geoObjects.add(res.geoObjects);
+                    if (res.mapState) {
+                        res.mapState.applyToMap(myMap);
+                    }
+                    else {
+                        myMap.setBounds(res.geoObjects.getBounds());
+                    }
+                }
+                myMap.zoom = 15;
+                            }
+        </script>
+    </head>
+    <body style="background-color: #73B392;">
+        <h1 style="text-align: center; color: #9D344B; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">World domination plans:</h1>
+        <div id="map" style="width: 800px; height: 500px; position: relative; margin: 0 auto;"></div>
+    </body>
+</html>
